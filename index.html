@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RIGOPS — Truck Driver Tool Suite</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">RIG<span class="accent">OPS</span></span>
+      </div>
+      <span class="logo-sub">Driver Tool Suite v2.0</span>
+    </div>
+    <nav class="topbar-nav">
+      <button class="nav-tab active" data-section="dashboard">DASHBOARD</button>
+      <button class="nav-tab" data-section="fuel">FUEL</button>
+      <button class="nav-tab" data-section="hos">HOS LOG</button>
+      <button class="nav-tab" data-section="pay">PAY CALC</button>
+      <button class="nav-tab" data-section="load">LOAD PLANNER</button>
+      <button class="nav-tab" data-section="trip">TRIP CALC</button>
+    </nav>
+    <div class="topbar-right">
+      <div class="status-pill">
+        <span class="pulse"></span>
+        <span id="clock">--:--:--</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <div class="mobile-nav">
+    <button class="nav-tab active" data-section="dashboard">DASH</button>
+    <button class="nav-tab" data-section="fuel">FUEL</button>
+    <button class="nav-tab" data-section="hos">HOS</button>
+    <button class="nav-tab" data-section="pay">PAY</button>
+    <button class="nav-tab" data-section="load">LOAD</button>
+    <button class="nav-tab" data-section="trip">TRIP</button>
+  </div>
+
+  <main class="main">
+
+    <!-- ═══════════════════════════════════════
+         SECTION: DASHBOARD
+    ═══════════════════════════════════════ -->
+    <section id="section-dashboard" class="section active">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">COMMAND CENTER</h1>
+          <p class="section-desc">Your complete trucking operations dashboard</p>
+        </div>
+        <div id="date-display" class="date-badge"></div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-icon">⛽</div>
+          <div class="stat-body">
+            <div class="stat-label">Last MPG</div>
+            <div class="stat-val" id="dash-mpg">—</div>
+          </div>
+          <div class="stat-unit">MPG</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏱</div>
+          <div class="stat-body">
+            <div class="stat-label">Drive Hours Left</div>
+            <div class="stat-val" id="dash-drive">11.0</div>
+          </div>
+          <div class="stat-unit">HRS</div>
+        </div>
+        <div class="stat-card accent-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-body">
+            <div class="stat-label">Last Pay Est.</div>
+            <div class="stat-val" id="dash-pay">—</div>
+          </div>
+          <div class="stat-unit">USD</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-body">
+            <div class="stat-label">Load Capacity</div>
+            <div class="stat-val" id="dash-load">—</div>
+          </div>
+          <div class="stat-unit">LBS</div>
+        </div>
+      </div>
+
+      <!-- Quick access grid -->
+      <div class="tools-grid">
+        <div class="tool-card" onclick="gotoSection('fuel')">
+          <div class="tool-card-icon">⛽</div>
+          <div class="tool-card-body">
+            <h3>FUEL CALCULATOR</h3>
+            <p>Calculate fuel costs, MPG, and range for any trip</p>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+        <div class="tool-card" onclick="gotoSection('hos')">
+          <div class="tool-card-icon">⏱</div>
+          <div class="tool-card-body">
+            <h3>HOS LOG TRACKER</h3>
+            <p>Track hours of service, breaks, and duty cycles</p>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+        <div class="tool-card" onclick="gotoSection('pay')">
+          <div class="tool-card-icon">💵</div>
+          <div class="tool-card-body">
+            <h3>PAY CALCULATOR</h3>
+            <p>Estimate earnings per mile, load, and time period</p>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+        <div class="tool-card" onclick="gotoSection('load')">
+          <div class="tool-card-icon">⚖️</div>
+          <div class="tool-card-body">
+            <h3>LOAD PLANNER</h3>
+            <p>Check axle weights and compliance limits</p>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+        <div class="tool-card" onclick="gotoSection('trip')">
+          <div class="tool-card-icon">🗺️</div>
+          <div class="tool-card-body">
+            <h3>TRIP PLANNER</h3>
+            <p>Calculate drive time, stops, and total trip cost</p>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+        <div class="tool-card info-card">
+          <div class="tool-card-icon">📋</div>
+          <div class="tool-card-body">
+            <h3>REGS REFERENCE</h3>
+            <p>Quick-reference FMCSA HOS rules and weight limits</p>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </div>
+
+      <!-- Regs reference panel -->
+      <div class="regs-panel">
+        <div class="regs-header">
+          <span class="regs-badge">FMCSA QUICK REFERENCE</span>
+        </div>
+        <div class="regs-grid">
+          <div class="reg-item">
+            <div class="reg-label">Max Drive (Prop. Carry.)</div>
+            <div class="reg-val">11 hrs</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">Max On-Duty</div>
+            <div class="reg-val">14 hrs</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">Required Off-Duty</div>
+            <div class="reg-val">10 hrs</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">30-Min Break After</div>
+            <div class="reg-val">8 hrs drive</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">60/7 Day Limit</div>
+            <div class="reg-val">60 hrs / 7 days</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">70/8 Day Limit</div>
+            <div class="reg-val">70 hrs / 8 days</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">Federal Gross Weight</div>
+            <div class="reg-val">80,000 lbs</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">Steer Axle Max</div>
+            <div class="reg-val">20,000 lbs</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">Drive Tandem Max</div>
+            <div class="reg-val">34,000 lbs</div>
+          </div>
+          <div class="reg-item">
+            <div class="reg-label">Trailer Tandem Max</div>
+            <div class="reg-val">34,000 lbs</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: FUEL CALCULATOR
+    ═══════════════════════════════════════ -->
+    <section id="section-fuel" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">⛽ FUEL CALCULATOR</h1>
+          <p class="section-desc">Calculate fuel costs, efficiency, and range</p>
+        </div>
+      </div>
+
+      <div class="calc-layout">
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">TRIP FUEL COST</span>
+            <span class="calc-badge">CALCULATOR</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>TOTAL MILES</label>
+                <div class="input-wrap">
+                  <input type="number" id="fuel-miles" placeholder="e.g. 650" min="0" />
+                  <span class="input-suffix">MI</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>FUEL EFFICIENCY</label>
+                <div class="input-wrap">
+                  <input type="number" id="fuel-mpg" placeholder="e.g. 6.5" step="0.1" min="0" />
+                  <span class="input-suffix">MPG</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>DIESEL PRICE</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="fuel-price" placeholder="e.g. 3.85" step="0.01" min="0" />
+                  <span class="input-suffix">/GAL</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>DEF ADDITIVE COST</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="fuel-def" placeholder="e.g. 0.15" step="0.01" min="0" />
+                  <span class="input-suffix">/MI</span>
+                </div>
+                <span class="input-hint">Optional — avg $0.10–0.20/mi</span>
+              </div>
+            </div>
+            <button class="btn-primary btn-block" onclick="calcFuel()">CALCULATE FUEL COST</button>
+
+            <div id="fuel-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item">
+                  <div class="result-item-label">GALLONS NEEDED</div>
+                  <div class="result-item-val" id="r-gallons">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">FUEL COST</div>
+                  <div class="result-item-val" id="r-fuel-cost">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">DEF COST</div>
+                  <div class="result-item-val" id="r-def-cost">—</div>
+                </div>
+                <div class="result-item highlight">
+                  <div class="result-item-label">TOTAL FUEL EXP.</div>
+                  <div class="result-item-val" id="r-fuel-total">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">MPG TRACKER</span>
+            <span class="calc-badge">CALCULATOR</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>MILES DRIVEN</label>
+                <div class="input-wrap">
+                  <input type="number" id="mpg-miles" placeholder="e.g. 450" min="0" />
+                  <span class="input-suffix">MI</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>GALLONS USED</label>
+                <div class="input-wrap">
+                  <input type="number" id="mpg-gallons" placeholder="e.g. 72" step="0.1" min="0" />
+                  <span class="input-suffix">GAL</span>
+                </div>
+              </div>
+            </div>
+            <button class="btn-secondary btn-block" onclick="calcMPG()">CALCULATE MPG</button>
+
+            <div id="mpg-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item highlight">
+                  <div class="result-item-label">FUEL EFFICIENCY</div>
+                  <div class="result-item-val" id="r-mpg">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">COST PER MILE</div>
+                  <div class="result-item-val" id="r-cpm">—</div>
+                </div>
+              </div>
+              <div id="mpg-rating" class="rating-bar-wrap"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">RANGE ESTIMATOR</span>
+            <span class="calc-badge">TOOL</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>TANK SIZE</label>
+                <div class="input-wrap">
+                  <input type="number" id="range-tank" placeholder="e.g. 150" min="0" />
+                  <span class="input-suffix">GAL</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>CURRENT FUEL LEVEL</label>
+                <div class="input-wrap">
+                  <input type="number" id="range-level" placeholder="e.g. 60" min="0" max="100" />
+                  <span class="input-suffix">%</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>AVERAGE MPG</label>
+              <div class="input-wrap">
+                <input type="number" id="range-mpg" placeholder="e.g. 6.5" step="0.1" min="0" />
+                <span class="input-suffix">MPG</span>
+              </div>
+            </div>
+            <button class="btn-secondary btn-block" onclick="calcRange()">ESTIMATE RANGE</button>
+
+            <div id="range-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item">
+                  <div class="result-item-label">FUEL IN TANK</div>
+                  <div class="result-item-val" id="r-tank-gal">—</div>
+                </div>
+                <div class="result-item highlight">
+                  <div class="result-item-label">EST. RANGE</div>
+                  <div class="result-item-val" id="r-range">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: HOS LOG
+    ═══════════════════════════════════════ -->
+    <section id="section-hos" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">⏱ HOS LOG TRACKER</h1>
+          <p class="section-desc">Hours of Service tracking — FMCSA compliant</p>
+        </div>
+      </div>
+
+      <div class="calc-layout">
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">DUTY CYCLE CALCULATOR</span>
+            <span class="calc-badge">11-HR RULE</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>HOURS DRIVEN TODAY</label>
+                <div class="input-wrap">
+                  <input type="number" id="hos-driven" placeholder="e.g. 4.5" step="0.5" min="0" max="11" />
+                  <span class="input-suffix">HRS</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>ON-DUTY (NOT DRIVING)</label>
+                <div class="input-wrap">
+                  <input type="number" id="hos-onduty" placeholder="e.g. 2.0" step="0.5" min="0" />
+                  <span class="input-suffix">HRS</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>SHIFT START TIME</label>
+                <div class="input-wrap">
+                  <input type="time" id="hos-start" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>HOS CYCLE</label>
+                <div class="input-wrap">
+                  <select id="hos-cycle">
+                    <option value="60">60-hr / 7-day</option>
+                    <option value="70">70-hr / 8-day</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>HOURS USED THIS CYCLE (Last 7/8 days)</label>
+              <div class="input-wrap">
+                <input type="number" id="hos-cycle-used" placeholder="e.g. 42" step="0.5" min="0" />
+                <span class="input-suffix">HRS</span>
+              </div>
+            </div>
+            <button class="btn-primary btn-block" onclick="calcHOS()">CALCULATE HOS STATUS</button>
+
+            <div id="hos-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item" id="hos-r-drive-wrap">
+                  <div class="result-item-label">DRIVE TIME LEFT</div>
+                  <div class="result-item-val" id="hos-r-drive">—</div>
+                </div>
+                <div class="result-item" id="hos-r-duty-wrap">
+                  <div class="result-item-label">ON-DUTY TIME LEFT</div>
+                  <div class="result-item-val" id="hos-r-duty">—</div>
+                </div>
+                <div class="result-item" id="hos-r-cycle-wrap">
+                  <div class="result-item-label">CYCLE HRS LEFT</div>
+                  <div class="result-item-val" id="hos-r-cycle">—</div>
+                </div>
+                <div class="result-item" id="hos-r-window-wrap">
+                  <div class="result-item-label">14-HR WINDOW ENDS</div>
+                  <div class="result-item-val" id="hos-r-window">—</div>
+                </div>
+              </div>
+              <div id="hos-alerts" class="alerts-wrap"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">BREAK PLANNER</span>
+            <span class="calc-badge">30-MIN RULE</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-group">
+              <label>HOURS SINCE LAST 30-MIN BREAK</label>
+              <div class="input-wrap">
+                <input type="number" id="break-since" placeholder="e.g. 5.5" step="0.5" min="0" max="11" />
+                <span class="input-suffix">HRS</span>
+              </div>
+              <span class="input-hint">30-min break required after 8 hrs cumulative driving</span>
+            </div>
+            <div class="form-group">
+              <label>PLANNED DRIVING THIS LEG</label>
+              <div class="input-wrap">
+                <input type="number" id="break-planned" placeholder="e.g. 4.0" step="0.5" min="0" />
+                <span class="input-suffix">HRS</span>
+              </div>
+            </div>
+            <button class="btn-secondary btn-block" onclick="calcBreak()">CHECK BREAK REQUIREMENT</button>
+
+            <div id="break-result" class="result-panel hidden">
+              <div id="break-status"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card full-width-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">HOS REGULATIONS — QUICK REFERENCE</span>
+            <span class="calc-badge">FMCSA</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="regs-grid dense">
+              <div class="reg-item">
+                <div class="reg-label">11-Hour Rule</div>
+                <div class="reg-val">Max 11 hrs driving after 10 consecutive hrs off duty</div>
+              </div>
+              <div class="reg-item">
+                <div class="reg-label">14-Hour Rule</div>
+                <div class="reg-val">Cannot drive beyond 14th consecutive hr after coming on duty</div>
+              </div>
+              <div class="reg-item">
+                <div class="reg-label">30-Minute Break</div>
+                <div class="reg-val">Must take 30-min break after 8 hrs of driving without a break</div>
+              </div>
+              <div class="reg-item">
+                <div class="reg-label">10-Hour Off Duty</div>
+                <div class="reg-val">Must be off duty for at least 10 consecutive hours between shifts</div>
+              </div>
+              <div class="reg-item">
+                <div class="reg-label">60/7 Day Limit</div>
+                <div class="reg-val">Cannot drive after 60 hrs on-duty in 7 consecutive days</div>
+              </div>
+              <div class="reg-item">
+                <div class="reg-label">70/8 Day Limit</div>
+                <div class="reg-val">Cannot drive after 70 hrs on-duty in 8 consecutive days</div>
+              </div>
+              <div class="reg-item">
+                <div class="reg-label">34-Hour Restart</div>
+                <div class="reg-val">Can restart 7/8-day period after 34 consecutive hrs off-duty</div>
+              </div>
+              <div class="reg-item">
+                <div class="reg-label">Sleeper Berth Split</div>
+                <div class="reg-val">Can split required 10-hr rest: 8+ hrs sleeper + 2+ hrs off</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: PAY CALCULATOR
+    ═══════════════════════════════════════ -->
+    <section id="section-pay" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">💵 PAY CALCULATOR</h1>
+          <p class="section-desc">Estimate gross and net earnings per load or period</p>
+        </div>
+      </div>
+
+      <div class="calc-layout">
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">CPM EARNINGS</span>
+            <span class="calc-badge">PER MILE</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>RATE PER MILE</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="pay-cpm" placeholder="e.g. 0.55" step="0.01" min="0" />
+                  <span class="input-suffix">/MI</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>LOADED MILES</label>
+                <div class="input-wrap">
+                  <input type="number" id="pay-loaded" placeholder="e.g. 500" min="0" />
+                  <span class="input-suffix">MI</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>EMPTY MILES</label>
+                <div class="input-wrap">
+                  <input type="number" id="pay-empty" placeholder="e.g. 75" min="0" />
+                  <span class="input-suffix">MI</span>
+                </div>
+                <span class="input-hint">Deadhead / bobtail miles</span>
+              </div>
+              <div class="form-group">
+                <label>LAYOVER PAY</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="pay-layover" placeholder="e.g. 150" min="0" />
+                </div>
+                <span class="input-hint">Per load additional pay</span>
+              </div>
+            </div>
+            <button class="btn-primary btn-block" onclick="calcPay()">CALCULATE EARNINGS</button>
+
+            <div id="pay-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item">
+                  <div class="result-item-label">TOTAL MILES</div>
+                  <div class="result-item-val" id="r-total-miles">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">MILE PAY</div>
+                  <div class="result-item-val" id="r-mile-pay">—</div>
+                </div>
+                <div class="result-item highlight">
+                  <div class="result-item-label">GROSS EARNINGS</div>
+                  <div class="result-item-val" id="r-gross">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">EFF. CPM (all miles)</div>
+                  <div class="result-item-val" id="r-eff-cpm">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">OWNER-OPERATOR NET</span>
+            <span class="calc-badge">EXPENSES</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>GROSS REVENUE</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="oo-gross" placeholder="e.g. 4500" min="0" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>TOTAL MILES</label>
+                <div class="input-wrap">
+                  <input type="number" id="oo-miles" placeholder="e.g. 2200" min="0" />
+                  <span class="input-suffix">MI</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>FUEL COST</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="oo-fuel" placeholder="e.g. 1100" min="0" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>DISPATCH FEE</label>
+                <div class="input-wrap">
+                  <input type="number" id="oo-dispatch-pct" placeholder="e.g. 10" min="0" max="50" />
+                  <span class="input-suffix">%</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>INSURANCE (per wk)</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="oo-insurance" placeholder="e.g. 350" min="0" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>OTHER EXPENSES</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="oo-other" placeholder="e.g. 200" min="0" />
+                </div>
+              </div>
+            </div>
+            <button class="btn-secondary btn-block" onclick="calcOO()">CALCULATE NET PROFIT</button>
+
+            <div id="oo-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item">
+                  <div class="result-item-label">TOTAL EXPENSES</div>
+                  <div class="result-item-val" id="r-expenses">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">NET REVENUE / MI</div>
+                  <div class="result-item-val" id="r-net-cpm">—</div>
+                </div>
+                <div class="result-item highlight">
+                  <div class="result-item-label">NET PROFIT</div>
+                  <div class="result-item-val" id="r-net">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">PROFIT MARGIN</div>
+                  <div class="result-item-val" id="r-margin">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">RATE PER MILE CHECKER</span>
+            <span class="calc-badge">TOOL</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>LOAD RATE / LINEHAUL</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="rpm-rate" placeholder="e.g. 2800" min="0" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>TOTAL MILES</label>
+                <div class="input-wrap">
+                  <input type="number" id="rpm-miles" placeholder="e.g. 650" min="0" />
+                  <span class="input-suffix">MI</span>
+                </div>
+              </div>
+            </div>
+            <button class="btn-secondary btn-block" onclick="calcRPM()">CHECK RATE</button>
+
+            <div id="rpm-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item highlight">
+                  <div class="result-item-label">RATE PER MILE</div>
+                  <div class="result-item-val" id="r-rpm">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">RATING</div>
+                  <div class="result-item-val" id="r-rpm-rating">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: LOAD PLANNER
+    ═══════════════════════════════════════ -->
+    <section id="section-load" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">⚖️ LOAD PLANNER</h1>
+          <p class="section-desc">Axle weight calculator and compliance checker</p>
+        </div>
+      </div>
+
+      <div class="calc-layout">
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">AXLE WEIGHT CALCULATOR</span>
+            <span class="calc-badge">BRIDGE LAW</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="axle-diagram">
+              <div class="axle-label-row">
+                <span>STEER</span>
+                <span>DRIVE TANDEM</span>
+                <span>TRAILER TANDEM</span>
+              </div>
+              <div class="axle-visual">
+                <div class="axle-group single">
+                  <div class="axle-block" id="axle-steer-bar"></div>
+                </div>
+                <div class="axle-group double">
+                  <div class="axle-block" id="axle-drive-bar"></div>
+                </div>
+                <div class="axle-group double">
+                  <div class="axle-block" id="axle-trailer-bar"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>STEER AXLE WEIGHT</label>
+                <div class="input-wrap">
+                  <input type="number" id="axle-steer" placeholder="e.g. 12000" min="0" max="20000" />
+                  <span class="input-suffix">LBS</span>
+                </div>
+                <span class="input-hint">Legal max: 20,000 lbs</span>
+              </div>
+              <div class="form-group">
+                <label>DRIVE TANDEM WEIGHT</label>
+                <div class="input-wrap">
+                  <input type="number" id="axle-drive" placeholder="e.g. 34000" min="0" max="34000" />
+                  <span class="input-suffix">LBS</span>
+                </div>
+                <span class="input-hint">Legal max: 34,000 lbs</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>TRAILER TANDEM WEIGHT</label>
+                <div class="input-wrap">
+                  <input type="number" id="axle-trailer" placeholder="e.g. 34000" min="0" max="34000" />
+                  <span class="input-suffix">LBS</span>
+                </div>
+                <span class="input-hint">Legal max: 34,000 lbs</span>
+              </div>
+              <div class="form-group">
+                <label>TRUCK TARE WEIGHT</label>
+                <div class="input-wrap">
+                  <input type="number" id="axle-tare" placeholder="e.g. 35000" min="0" />
+                  <span class="input-suffix">LBS</span>
+                </div>
+                <span class="input-hint">Empty truck + trailer weight</span>
+              </div>
+            </div>
+            <button class="btn-primary btn-block" onclick="calcAxle()">CHECK COMPLIANCE</button>
+
+            <div id="axle-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item" id="axle-r-gvw-wrap">
+                  <div class="result-item-label">GROSS VEHICLE WEIGHT</div>
+                  <div class="result-item-val" id="axle-r-gvw">—</div>
+                </div>
+                <div class="result-item" id="axle-r-payload-wrap">
+                  <div class="result-item-label">PAYLOAD CAPACITY</div>
+                  <div class="result-item-val" id="axle-r-payload">—</div>
+                </div>
+              </div>
+              <div id="axle-compliance" class="compliance-wrap"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">MAX PAYLOAD FINDER</span>
+            <span class="calc-badge">TOOL</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>TRUCK TARE WEIGHT</label>
+                <div class="input-wrap">
+                  <input type="number" id="payload-tare" placeholder="e.g. 35000" min="0" />
+                  <span class="input-suffix">LBS</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>STATE WEIGHT LIMIT</label>
+                <div class="input-wrap">
+                  <select id="payload-limit">
+                    <option value="80000">Federal — 80,000 lbs</option>
+                    <option value="85000">Some states — 85,000 lbs</option>
+                    <option value="88000">Some states — 88,000 lbs</option>
+                    <option value="105500">Michigan — 105,500 lbs</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button class="btn-secondary btn-block" onclick="calcPayload()">CALCULATE MAX PAYLOAD</button>
+
+            <div id="payload-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item highlight">
+                  <div class="result-item-label">MAX PAYLOAD</div>
+                  <div class="result-item-val" id="r-max-payload">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">MAX PAYLOAD (TONS)</div>
+                  <div class="result-item-val" id="r-max-payload-tons">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: TRIP CALCULATOR
+    ═══════════════════════════════════════ -->
+    <section id="section-trip" class="section">
+      <div class="section-header">
+        <div>
+          <h1 class="section-title">🗺️ TRIP PLANNER</h1>
+          <p class="section-desc">Plan drive times, stops, and total trip costs</p>
+        </div>
+      </div>
+
+      <div class="calc-layout">
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">DRIVE TIME ESTIMATOR</span>
+            <span class="calc-badge">PLANNER</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>TOTAL TRIP MILES</label>
+                <div class="input-wrap">
+                  <input type="number" id="trip-miles" placeholder="e.g. 1200" min="0" />
+                  <span class="input-suffix">MI</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>AVERAGE SPEED</label>
+                <div class="input-wrap">
+                  <input type="number" id="trip-speed" placeholder="e.g. 62" min="0" max="75" />
+                  <span class="input-suffix">MPH</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>FUEL STOPS (est. min each)</label>
+                <div class="input-wrap">
+                  <input type="number" id="trip-stops" placeholder="e.g. 2" min="0" />
+                  <span class="input-suffix"># STOPS</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>STOP DURATION</label>
+                <div class="input-wrap">
+                  <input type="number" id="trip-stop-min" placeholder="e.g. 30" min="0" />
+                  <span class="input-suffix">MIN</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>DEPARTURE TIME</label>
+              <div class="input-wrap">
+                <input type="time" id="trip-depart" />
+              </div>
+            </div>
+            <button class="btn-primary btn-block" onclick="calcTrip()">PLAN THIS TRIP</button>
+
+            <div id="trip-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item">
+                  <div class="result-item-label">DRIVE TIME</div>
+                  <div class="result-item-val" id="r-drive-time">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">STOP TIME</div>
+                  <div class="result-item-val" id="r-stop-time">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">TOTAL TRIP TIME</div>
+                  <div class="result-item-val" id="r-total-time">—</div>
+                </div>
+                <div class="result-item highlight">
+                  <div class="result-item-label">EST. ARRIVAL</div>
+                  <div class="result-item-val" id="r-arrival">—</div>
+                </div>
+              </div>
+              <div id="trip-hos-note" class="hos-note"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <span class="calc-card-title">TRIP COST BREAKDOWN</span>
+            <span class="calc-badge">ALL-IN</span>
+          </div>
+          <div class="calc-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>TRIP MILES</label>
+                <div class="input-wrap">
+                  <input type="number" id="cost-miles" placeholder="e.g. 1200" min="0" />
+                  <span class="input-suffix">MI</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>MPG</label>
+                <div class="input-wrap">
+                  <input type="number" id="cost-mpg" placeholder="e.g. 6.5" step="0.1" min="0" />
+                  <span class="input-suffix">MPG</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>DIESEL PRICE</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="cost-diesel" placeholder="e.g. 3.85" step="0.01" min="0" />
+                  <span class="input-suffix">/GAL</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>TOLLS ESTIMATE</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="cost-tolls" placeholder="e.g. 45" min="0" />
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>SCALE / FEES</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="cost-scales" placeholder="e.g. 20" min="0" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>MISC EXPENSES</label>
+                <div class="input-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="cost-misc" placeholder="e.g. 50" min="0" />
+                </div>
+              </div>
+            </div>
+            <button class="btn-secondary btn-block" onclick="calcTripCost()">CALCULATE TOTAL COST</button>
+
+            <div id="cost-result" class="result-panel hidden">
+              <div class="result-grid">
+                <div class="result-item">
+                  <div class="result-item-label">FUEL COST</div>
+                  <div class="result-item-val" id="r-trip-fuel">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">TOLLS + FEES</div>
+                  <div class="result-item-val" id="r-trip-fees">—</div>
+                </div>
+                <div class="result-item">
+                  <div class="result-item-label">COST PER MILE</div>
+                  <div class="result-item-val" id="r-trip-cpm">—</div>
+                </div>
+                <div class="result-item highlight">
+                  <div class="result-item-label">TOTAL TRIP COST</div>
+                  <div class="result-item-val" id="r-trip-total">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span>RIGOPS Driver Tool Suite — For reference only. Always verify with official FMCSA regulations.</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
