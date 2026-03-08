@@ -482,6 +482,95 @@ function calcTripCost() {
   show('cost-result');
 }
 
+// ── Load Boards ────────────────────────────────────────────
+
+/**
+ * handleLoadBoard — called by the Find Better Loads section buttons.
+ * Links are placeholder (#) so we show a brief toast notification
+ * instead of navigating. Swap href values to real URLs when ready.
+ */
+function handleLoadBoard(name) {
+  const urls = {
+    'DAT Load Board':        '#',   // Replace with: https://www.dat.com
+    'Truckstop Load Board':  '#',   // Replace with: https://truckstop.com
+    'Direct Shipper Freight':'#',   // Replace with: chosen direct-freight platform
+  };
+
+  const url = urls[name] || '#';
+
+  // Show toast notification
+  showToast(`Opening ${name}…`, 'info');
+
+  // If a real URL is set (not #), open in new tab
+  if (url !== '#') {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  return false; // prevent default anchor navigation for placeholder links
+}
+
+/**
+ * showToast — lightweight in-app notification
+ * type: 'info' | 'success' | 'warning' | 'error'
+ */
+function showToast(message, type = 'info') {
+  // Remove any existing toast
+  const existing = document.getElementById('rigops-toast');
+  if (existing) existing.remove();
+
+  const colors = {
+    info:    { bg: 'rgba(56,189,248,0.12)',  border: 'rgba(56,189,248,0.35)',  text: '#93d8f8' },
+    success: { bg: 'rgba(34,208,122,0.12)',  border: 'rgba(34,208,122,0.35)',  text: '#7dffc0' },
+    warning: { bg: 'rgba(255,193,7,0.12)',   border: 'rgba(255,193,7,0.35)',   text: '#ffd54f' },
+    error:   { bg: 'rgba(239,68,68,0.12)',   border: 'rgba(239,68,68,0.35)',   text: '#fca5a5' },
+  };
+
+  const c = colors[type] || colors.info;
+
+  const toast = document.createElement('div');
+  toast.id = 'rigops-toast';
+  toast.textContent = message;
+
+  Object.assign(toast.style, {
+    position:     'fixed',
+    bottom:       '28px',
+    right:        '28px',
+    zIndex:       '9999',
+    background:   c.bg,
+    border:       `1px solid ${c.border}`,
+    color:        c.text,
+    fontFamily:   "'Barlow Condensed', sans-serif",
+    fontSize:     '0.85rem',
+    fontWeight:   '700',
+    letterSpacing:'0.08em',
+    textTransform:'uppercase',
+    padding:      '12px 20px',
+    borderRadius: '8px',
+    boxShadow:    '0 8px 32px rgba(0,0,0,0.5)',
+    opacity:      '0',
+    transform:    'translateY(10px)',
+    transition:   'opacity 0.2s ease, transform 0.2s ease',
+    pointerEvents:'none',
+  });
+
+  document.body.appendChild(toast);
+
+  // Animate in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      toast.style.opacity   = '1';
+      toast.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Animate out after 3s
+  setTimeout(() => {
+    toast.style.opacity   = '0';
+    toast.style.transform = 'translateY(10px)';
+    setTimeout(() => toast.remove(), 250);
+  }, 3000);
+}
+
 // ── Init ───────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
