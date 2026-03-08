@@ -486,27 +486,25 @@ function calcTripCost() {
 
 /**
  * handleLoadBoard — called by the Find Better Loads section buttons.
- * Links are placeholder (#) so we show a brief toast notification
- * instead of navigating. Swap href values to real URLs when ready.
+ * Opens the corresponding load board in a new browser tab.
  */
 function handleLoadBoard(name) {
   const urls = {
-    'DAT Load Board':        '#',   // Replace with: https://www.dat.com
-    'Truckstop Load Board':  '#',   // Replace with: https://truckstop.com
-    'Direct Shipper Freight':'#',   // Replace with: chosen direct-freight platform
+    'DAT Load Board':        'https://www.dat.com/load-board',
+    'Truckstop Load Board':  'https://truckstop.com/load-board/',
+    'Direct Shipper Freight':'https://www.freightwaves.com',
   };
 
-  const url = urls[name] || '#';
+  const url = urls[name];
 
-  // Show toast notification
-  showToast(`Opening ${name}…`, 'info');
-
-  // If a real URL is set (not #), open in new tab
-  if (url !== '#') {
+  if (url) {
+    showToast(`Opening ${name}…`, 'success');
     window.open(url, '_blank', 'noopener,noreferrer');
+  } else {
+    showToast(`Link not found for ${name}`, 'warning');
   }
 
-  return false; // prevent default anchor navigation for placeholder links
+  return false; // prevent default anchor navigation
 }
 
 /**
